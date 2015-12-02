@@ -1,5 +1,5 @@
-files=dir('C:\Users\Prithviraj Dhar\Downloads\Jersey Numbers-New\Jersey Numbers-New\Sahana\Orignal');
-target = 'C:\Users\Prithviraj Dhar\Downloads\Jersey Numbers-New\Jersey Numbers-New\Sahana\Orignal\patches\';%%%% TARGET FOLDER
+files=dir('../test_images');
+target = '../test_patches';%%%% TARGET FOLDER
 mkdir(target);
 for file = files(4:length(files))'
     if(file.bytes>8000)
