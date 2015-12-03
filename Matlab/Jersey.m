@@ -5,8 +5,8 @@ for file = files(4:length(files))'
     if(file.bytes>8000)
         
         file
-        colorImage = imread(strcat('C:\Users\Prithviraj Dhar\Downloads\Jersey Numbers-New\Jersey Numbers-New\Sahana\Orignal\',file.name));
-        ntarget=strcat('C:\Users\Prithviraj Dhar\Downloads\Jersey Numbers-New\Jersey Numbers-New\Sahana\Orignal\patches\',file.name,'\');
+        colorImage = imread(strcat('test_images',file.name));
+        ntarget=strcat(target);
         mkdir(ntarget);
         I=rgb2gray(colorImage);
         % Detect MSER regions.
