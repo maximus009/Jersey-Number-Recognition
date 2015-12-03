@@ -1,5 +1,6 @@
 import cv2
-img = cv2.imread('ynk.jpg');
+from skimage.measure import regionprops
+img = cv2.imread('../test_images/o_y10.jpg');
 mser = cv2.MSER()
 regions = mser.detect(img)
 
@@ -12,6 +13,8 @@ class MSER:
         
     def get_regions(self):
         return self.regions
+    def test_regions(self):
+        
     
     def filter_text(self):
         pass
