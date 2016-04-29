@@ -10,6 +10,8 @@ print connectedComp, numOfComps
 mserStats = measure.regionprops(connectedComp)
 print len(mserStats)
 filtered = []
+
+# NEED to speed it up
 for region in mserStats:
     if region.eccentricity < 0.995 and region.solidity > 0.7 and region.euler_number > -4 and region.extent > 0.75:
         x1,y1,x2,y2 = region.bbox

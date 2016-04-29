@@ -2,7 +2,7 @@ from numpy import uint8, hstack, ndarray
 import cv2
 from skimage import morphology
 from skimage import measure
-
+import os
 
 class MSER:
   def __init__(self,im):
@@ -52,21 +52,18 @@ class MSER:
     ##cv2.polylines(image_dummy, self.f_hulls, 1, (0,255,255))
     return image_dummy
 
-  def refine_MSER(self):
-    h_prime = []
-    ctr = 0
+  def return_MSER_crops(self):
+    #ctr = 0
     for ah in self.hulls:
       R = cv2.boundingRect(ah)
-      reg_h, reg_w = float(R[3]), float(R[2])
-      a_r = reg_w/reg_h
-      h_prime.append(ah)
       row_start, col_start = R[1], R[0]
       h, w = R[3], R[2]
       row_end, col_end = row_start+h, col_start+w
       patch = self.gray[row_start:row_end, col_start:col_end]
       im_patch = self.image[row_start:row_end, col_start:col_end]
-      cv2.imwrite(str(ctr)+".jpg",im_patch)
-      ctr+=1
+      yield im_patch
+      #cv2.imwrite(str(ctr)+".jpg",im_patch)
+      #ctr+=1
 
   def _filter_regions(self):
     self.connectedComps = morphology.label(self.gray,
@@ -82,12 +79,21 @@ class MSER:
     for region in self.filteredRegions:
       print region.convex_image
 
+def gather_data(path):
+  ctr = 0
+  for dirname, dirnames, filenames in os.walk(path):
+    for filename in filenames:
+      image = cv2.imread(os.path.join(path, filename))
+      Obj = MSER(image)
+      Obj.get_MSER_bounds()
+      
+      for patch in Obj.return_MSER_crops():
+        cv2.imwrite("../test_patches/"+str(ctr)+".jpg",patch)
+        ctr+=1
+
+  return
 
 if __name__ == "__main__":
-  img = cv2.imread('../test_images/o_y17.jpg');
-  Obj = MSER(img)
-  Obj.get_MSER_bounds()
-  Obj.refine_MSER()
-  out = Obj.draw_MSER_bounds()
-  cv2.imwrite('../test_patches/out.jpg',out)
- 
+  #main()
+  gather_data('../test_patches/')
+
